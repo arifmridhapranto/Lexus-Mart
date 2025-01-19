@@ -1,0 +1,83 @@
+{% assign main_menu_linklist = linklists[section.settings.header-menu] %}
+
+
+<div class="container">
+  <div class="">
+    <div class="d-flex justify-content-between align-items-center">
+      <!-- STORE NAME / STORE LOGO -->
+      <div class="">
+        <a href="{{shop.url}}" class="text-decoration-none text-black">
+          <h1>{{ section.settings.logo_text }}</h1>
+        </a>
+      </div>
+
+      <!-- NAVIGATION MENU -->
+      <nav class="d-flex justify-content-around align-items-center">
+        {% for link in main_menu_linklist.links %}
+          {% if link.links != blank %}
+              <div class="dropdown-center">
+                <button
+                  class="btn btn-secondary dropdown-toggle"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="true"
+                >
+                  {{ link.title }}
+                  {% comment %} <span class="icon-dropdown">
+                    {% render 'icon-dropdown' %}
+                  </span> {% endcomment %}
+                </button>
+                <ul class="dropdown-menu">
+                  {% for childLinks in link.links %}
+                    <li>
+                      <a class="dropdown-item" href="{{childLinks.url}}">{{ childLinks.title }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+
+          {% else %}
+            <div class="me-2">
+              <a href="{{link.url}}" class="">{{ link.title }}</a>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </nav>
+
+      <div class="d-flex justify-content-around align-items-center">
+        <a href="{{routes.cart_url}}" class="me-2">
+          <span class="d-block cart-icon">
+            {% render 'shopping-bag' %}
+          </span>
+        </a>
+        <a href="{{routes.account_login_url}}" class="me-2">Login</a>
+        <a href="{{routes.account_register_url}}" class="me-2">Register</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+{% schema %}
+    {
+        "name": "Header",
+        "settings": [
+            {
+                "type": "text",
+                "id": "logo_text",
+                "label" : "logo text here" ,
+                "default": "Lexus Mart",
+                "info": "This is the text that will be displayed as the logo",
+            },
+            {
+                "type": "link_list",
+                "id": "header-menu",
+                "label": "header Menu",
+                "default": "main-menu"
+            }
+        ]
+    }
+{% endschema %}
